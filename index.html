@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menoxde.yuh</title>
+  <style>
+    :root{
+      --bg:#050608; --panel:rgba(255,255,255,.06); --border:rgba(255,255,255,.10);
+      --text:#fff; --muted:rgba(255,255,255,.65); --green:#22c55e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 50% 30%, rgba(16,185,129,.16), transparent 60%),
+        radial-gradient(900px 700px at 10% 90%, rgba(34,197,94,.10), transparent 55%),
+        linear-gradient(#000, #071b14 45%, #000);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.6;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.35) 50%, transparent 55%),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.30) 50%, transparent 55%),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.25) 50%, transparent 55%),
+        radial-gradient(2px 2px at 85% 20%, rgba(255,255,255,.25) 50%, transparent 55%),
+        radial-gradient(1px 1px at 10% 55%, rgba(255,255,255,.20) 50%, transparent 55%);
+      background-size: 420px 420px;
+      animation: drift 18s linear infinite;
+    }
+    @keyframes drift{ to{ transform: translateY(24px);} }
+
+    .nav{display:flex; justify-content:space-between; align-items:center; padding:24px 32px;}
+    .brand{font-weight:800; color:#34d399; letter-spacing:.2px}
+    .nav a{color:var(--muted); text-decoration:none; margin-right:18px}
+    .nav a:hover{color:#fff}
+    .btn{
+      border:1px solid var(--border); background:transparent; color:#fff;
+      padding:12px 18px; border-radius:999px; cursor:pointer;
+      transition:transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.2)}
+    .btn.green{
+      background:var(--green); border-color:transparent; color:#07110d; font-weight:800;
+      box-shadow: 0 10px 30px rgba(34,197,94,.18);
+    }
+    .btn.green:hover{background:#16a34a}
+    .btn:active{transform:translateY(0px) scale(.99)}
+
+    .hero{padding:80px 20px 90px; text-align:center; max-width:1100px; margin:0 auto;}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10);
+      border-radius:999px; padding:10px 14px; color:rgba(255,255,255,.8);
+      animation: pop .7s ease both;
+    }
+    @keyframes pop{ from{opacity:0; transform:translateY(-10px)} to{opacity:1; transform:none} }
+    h1{margin:18px 0 10px; font-size:clamp(40px,6vw,82px); line-height:1.02; letter-spacing:-.02em}
+    h1 .g{color:#34d399}
+    .sub{color:rgba(255,255,255,.6); font-size:18px; max-width:740px; margin:16px auto 0}
+    .cta{margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+
+    .section{max-width:1200px; margin:0 auto; padding:0 22px 90px;}
+    .grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px;}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background:var(--panel); border:1px solid var(--border); border-radius:22px;
+      padding:22px; min-height:140px;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+      opacity:0; transform:translateY(14px);
+      backdrop-filter: blur(10px);
+    }
+    .card.show{opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease, border-color .18s ease}
+    .card:hover{transform:translateY(-3px); border-color:rgba(52,211,153,.4); background:rgba(255,255,255,.075)}
+    .icon{
+      width:42px; height:42px; border-radius:14px; display:grid; place-items:center;
+      background:rgba(52,211,153,.12); border:1px solid rgba(52,211,153,.22);
+      margin-bottom:12px; color:#34d399; font-size:18px;
+    }
+    .card h3{margin:0 0 8px}
+    .card p{margin:0; color:rgba(255,255,255,.62)}
+
+    .pricingTitle{color:rgba(255,255,255,.65); text-align:center; padding-top:20px; margin-bottom:18px;}
+    .priceGrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
+    @media (max-width: 1000px){ .priceGrid{grid-template-columns:1fr} }
+
+    .price{
+      background:var(--panel); border:1px solid var(--border); border-radius:26px; padding:26px;
+      opacity:0; transform:translateY(14px);
+      backdrop-filter: blur(10px);
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .price:hover{transform:translateY(-3px); border-color:rgba(255,255,255,.2)}
+    .price.show{opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease}
+    .badge{
+      display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px;
+      background:rgba(34,197,94,.18); border:1px solid rgba(34,197,94,.35);
+      color:#7cf0b8; font-size:12px; margin-bottom:10px;
+    }
+    .price h4{margin:6px 0 6px; font-size:22px}
+    .price .desc{color:rgba(255,255,255,.55); margin-bottom:14px}
+    .amount{font-size:46px; font-weight:900}
+    .per{font-size:14px; color:rgba(255,255,255,.55); margin-left:6px}
+    ul{padding-left:18px; color:rgba(255,255,255,.66); line-height:1.9}
+    .full{width:100%}
+    .highlight{border-color:rgba(52,211,153,.45); background:rgba(16,185,129,.10)}
+    .footer{padding:40px 22px 60px; text-align:center; color:rgba(255,255,255,.5)}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="brand">&gt;_ Menoxde</div>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <button class="btn green" id="discordBtn">Join Discord</button>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="pill">✨ <span>Experience the Future</span></div>
+    <h1><span class="g">Menoxide</span><br/>Serverside</h1>
+    <div class="sub">Experience lightning-fast server-side execution with flawless performance</div>
+    <div class="cta">
+      <button class="btn green" id="viewPricing">View Pricing</button>
+      <button class="btn" id="joinCommunity">Join Community</button>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="grid">
+      <div class="card reveal">
+        <div class="icon">⚡</div>
+        <h3>Lightning Fast</h3>
+        <p>Execute scripts with minimal latency and maximum efficiency</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🛡️</div>
+        <h3>Undetected</h3>
+        <p>Advanced bypass technology keeps you safe and secure</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🧠</div>
+        <h3>Powerful Execution</h3>
+        <p>Run complex scripts with full server-side capabilities</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🔁</div>
+        <h3>Auto Updates</h3>
+        <p>Always stay up-to-date with automatic patches</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🌐</div>
+        <h3>Wide Game Support</h3>
+        <p>Compatible with thousands of popular games</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🔒</div>
+        <h3>Secure Access</h3>
+        <p>Your keys and data are protected with encryption</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="pricingTitle">Choose the plan that fits your needs</div>
+
+    <div class="priceGrid">
+      <div class="price reveal">
+        <h4>Basic</h4>
+        <div class="desc">Perfect for getting started</div>
+        <div><span class="amount">£5</span><span class="per">/month</span></div>
+        <ul>
+          <li>Access to basic scripts</li>
+          <li>Standard execution speed</li>
+          <li>24/7 Support access</li>
+          <li>100+ Game support</li>
+        </ul>
+        <button class="btn full" id="basicBtn">Get Started</button>
+      </div>
+
+      <div class="price reveal highlight">
+        <div class="badge">★ Popular</div>
+        <h4>Premium</h4>
+        <div class="desc">Most popular choice</div>
+        <div><span class="amount">£15</span><span class="per">/month</span></div>
+        <ul>
+          <li>All Basic features</li>
+          <li>Priority execution</li>
+          <li>Exclusive premium scripts</li>
+          <li>Early access to updates</li>
+          <li>Private Discord role</li>
+        </ul>
+        <button class="btn green full" id="premiumBtn">Get Started</button>
+      </div>
+
+      <div class="price reveal">
+        <h4>Lifetime</h4>
+        <div class="desc">Best value forever</div>
+        <div><span class="amount">£50</span><span class="per">one-time</span></div>
+        <ul>
+          <li>All Premium features</li>
+          <li>Lifetime access</li>
+          <li>All future updates</li>
+          <li>Priority support</li>
+          <li>Custom script requests</li>
+        </ul>
+        <button class="btn full" id="lifetimeBtn">Get Started</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© <span id="year"></span> Menoxde.yuh</div>
+
+  <script>
+    // ====== LINKS (change these) ======
+    const DISCORD_INVITE = "https://discord.gg/8npUWyTTvw";     // put your invite here
+    const COMMUNITY_LINK = "https://discord.gg/8npUWyTTvw";    // or your community page
+    // ==================================
+
+    // smooth scroll buttons
+    document.getElementById("viewPricing").onclick = () =>
+      document.getElementById("pricing").scrollIntoView({ behavior: "smooth" });
+
+    document.getElementById("joinCommunity").onclick = () =>
+      window.open(COMMUNITY_LINK, "_blank");
+
+    document.getElementById("discordBtn").onclick = () =>
+      window.open(DISCORD_INVITE, "_blank");
+
+    // pricing buttons (wire payments later)
+    document.getElementById("basicBtn").onclick = () =>
+      alert("Basic clicked! (we can connect Stripe later)");
+
+    document.getElementById("premiumBtn").onclick = () =>
+      alert("Premium clicked! (we can connect Stripe later)");
+
+    document.getElementById("lifetimeBtn").onclick = () =>
+      alert("Lifetime clicked! (we can connect Stripe later)");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // reveal on scroll animations
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.isIntersecting && e.target.classList.add("show"));
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
